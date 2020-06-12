@@ -1,7 +1,30 @@
 package cn.itcast.itcaststore.dao;
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Date;
+import java.sql.NClob;
+import java.sql.Ref;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.RowId;
 import java.sql.SQLException;
+import java.sql.SQLWarning;
+import java.sql.SQLXML;
+import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -11,6 +34,7 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 import cn.itcast.itcaststore.domain.Order;
 import cn.itcast.itcaststore.domain.OrderItem;
 import cn.itcast.itcaststore.domain.Product;
+import cn.itcast.itcaststore.domain.User;
 import cn.itcast.itcaststore.utils.DataSourceUtils;
 
 public class ProductDao {
@@ -74,7 +98,52 @@ public class ProductDao {
 		QueryRunner runner = new QueryRunner(DataSourceUtils.getDataSource());
 		return runner.query(sql, new BeanHandler<Product>(Product.class), id);
 	}
-
+	//推荐
+	public List<Product> Recommend(User user) throws SQLException {
+		
+		
+		int lianbu=0,shoubu=0,shentihuli=0,yanbu=0,toufa=0,num=0;
+		String m;
+		
+		String sql = "select * from orderitem where userid=?";
+		QueryRunner runner = new QueryRunner(DataSourceUtils.getDataSource());
+		List<Product> p;
+		p=runner.query(sql, new BeanListHandler<Product>(Product.class),user.getId());
+		for(Product pr:p)
+		{
+			m=pr.getCategory();
+			if(m.equals("lianbu")) lianbu++;
+			if(m.equals("shoubu")) shoubu++;
+			if(m.equals("shentihuli")) shentihuli++;
+			if(m.equals("yanbu")) yanbu++;
+			if(m.equals("toufa")) toufa++;
+			
+		}
+		
+		m="lianbu";
+		if(shoubu>num)
+		{
+			num=shoubu;m="shoubu";
+		}
+		if(shentihuli>num)
+		{
+			num=shentihuli;m="shentihuli";
+		}
+		if(yanbu>num)
+		{
+			num=yanbu;m="yanbu";
+		}
+		if(toufa>num)
+		{
+			num=toufa;m="toufa";
+		}
+		
+		
+		
+		sql="select * from products where category=?";
+		return runner.query(sql, new BeanListHandler<Product>(Product.class), m);
+	}
+	
 	// 生成订单时，将商品数量减少
 	public void changeProductNum(Order order) throws SQLException {
 		String sql = "update products set pnum=pnum-? where id=?";

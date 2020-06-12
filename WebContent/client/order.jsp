@@ -4,9 +4,66 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+<meta http-equiv="Content-Language" content="zh-cn">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>咕咕商城</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/client/css/main.css" type="text/css" />
-	<script type="text/javascript" src="${pageContext.request.contextPath}/client/js/order.js"></script>
+	<script type="text/javascript">
+	var receiverAddressObj;
+	var receiverNameObj;
+	var receiverPhoneObj;
+
+	window.onload = function() {	// 页面加载之后, 获取页面中的对象
+		receiverAddressObj = document.getElementById("receiverAddress");
+		receiverNameObj = document.getElementById("receiverName");
+		receiverPhoneObj = document.getElementById("receiverPhone");
+	};
+
+	function checkOnSubmit() {			// 验证整个表单
+		var receiverAddress = checkReceiverAddress();
+		var receiverName = checkReceiverName();
+		var receiverPhone = checkReceiverPhone();
+		if(receiverAddress && receiverName && receiverPhone){
+			document.getElementById("orderForm").submit();
+		}else{
+		   return "";
+		}
+	}
+
+	function checkReceiverAddress() {			// 验证收获地址
+		var value =receiverAddressObj.value;
+		var msg = "";
+		if (!value)
+			msg = "收货地址必须填写";	
+		receiverAddressMsg.innerHTML = msg;
+		receiverAddressObj.parentNode.parentNode.style.color = msg == "" ? "black" : "red";
+		return msg == "";
+	}
+
+	function checkReceiverName() {		// 验证收货人
+		var value =receiverNameObj.value;
+		var msg = "";
+		if (!value)
+			msg = "收货人必须填写(The name must be provided)";	
+		receiverNameMsg.innerHTML = msg;
+		receiverNameObj.parentNode.parentNode.style.color = msg == "" ? "black" : "red";
+		return msg == "";
+	}
+
+	function checkReceiverPhone() {		// 验证联系方式
+		var regex =/^1[3,5,8]\d{9}$/;	//以13、15、18开头的手机号
+		var value =receiverPhoneObj.value;
+		var msg = "";
+		if (!value)
+			msg = "联系方式必须填写(Contact information must be provided)";
+		//else if (!regex.test(value))
+		//	msg = "手机号码不合法：";
+		receiverPhoneMsg.innerHTML = msg;
+		receiverPhoneObj.parentNode.parentNode.style.color = msg == "" ? "black" : "red";
+		return msg == "";
+	}
+
+	</script>
 </head>
 <body class="main">
 	<p:user/>
@@ -83,7 +140,9 @@
 												</p>
 												<hr />
 												<p style="text-align:right">
+													
 													<img src="images/gif53_029.gif" width="204" height="51" border="0" onclick="checkOnSubmit();"/>
+													
 												</p>
 											</td>
 										</tr>

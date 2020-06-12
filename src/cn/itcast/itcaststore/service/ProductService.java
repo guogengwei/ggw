@@ -4,6 +4,7 @@ import java.util.List;
 import cn.itcast.itcaststore.dao.ProductDao;
 import cn.itcast.itcaststore.domain.PageBean;
 import cn.itcast.itcaststore.domain.Product;
+import cn.itcast.itcaststore.domain.User;
 import cn.itcast.itcaststore.exception.AddProductException;
 import cn.itcast.itcaststore.exception.FindProductByIdException;
 import cn.itcast.itcaststore.exception.ListProductException;
@@ -79,6 +80,16 @@ public class ProductService {
 		try {
 			ps = dao.findProductByManyCondition(id, name, category, minprice,
 					maxprice);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ps;
+	}
+	//推荐
+	public List<Product> Recommend(User user){
+		List<Product> ps = null;
+		try {
+			ps = dao.Recommend(user);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

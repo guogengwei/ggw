@@ -4,6 +4,6 @@
 		<property name="driverClass">com.mysql.cj.jdbc.Driver</property>
 		<property name="jdbcUrl">jdbc:mysql://localhost:3306/itcaststore?useSSL=false&amp;serverTimezone=UTC&amp;characterEncoding=UTF-8</property>
 		<property name="user">root</property>
-		<property name="password">123456</property>
+		<property name="password">20000118</property>
 	</default-config> 
 </c3p0-config>

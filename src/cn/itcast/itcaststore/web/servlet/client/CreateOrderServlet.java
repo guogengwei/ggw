@@ -43,13 +43,15 @@ public class CreateOrderServlet extends HttpServlet {
 			item.setOrder(order);
 			item.setBuynum(cart.get(p));
 			item.setP(p);
+			item.setcategory(p.getCategory());
+			item.setuserid(user.getId());
 			order.getOrderItems().add(item);
 		}
 		System.out.println(order);
 		// 4.调用service中添加订单操作.
 		OrderService service = new OrderService();
 		service.addOrder(order);
-//		request.getRequestDispatcher("/client/orderlist.jsp").forward(request, response);
+		//request.getRequestDispatcher("/client/order.jsp").forward(request, response);
 		response.sendRedirect(request.getContextPath() + "/client/createOrderSuccess.jsp");
 	}
 

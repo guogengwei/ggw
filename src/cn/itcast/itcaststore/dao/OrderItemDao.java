@@ -18,18 +18,20 @@ public class OrderItemDao {
 	// 添加订单项
 	public void addOrderItem(Order order) throws SQLException {
 		// 1.生成sql语句
-		String sql = "insert into orderItem values(?,?,?)";
+		String sql = "insert into orderItem values(?,?,?,?,?)";
 
 		QueryRunner runner = new QueryRunner();
 
 		List<OrderItem> items = order.getOrderItems();
 
-		Object[][] params = new Object[items.size()][3];
+		Object[][] params = new Object[items.size()][5];
 
 		for (int i = 0; i < params.length; i++) {
 			params[i][0] = items.get(i).getOrder().getId();
 			params[i][1] = items.get(i).getP().getId();
 			params[i][2] = items.get(i).getBuynum();
+			params[i][3] = items.get(i).getP().getCategory();
+			params[i][4] = items.get(i).getOrder().getUser().getId();
 		}
 
 		runner.batch(DataSourceUtils.getConnection(), sql, params);

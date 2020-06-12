@@ -56,7 +56,9 @@ public class UserService {
 			if (user != null) {
 				// 只有是激活才能登录成功，否则提示“用户未激活”
 				//if (user.getState() == 1) {
-					return user;
+				dao.addloginlog(user);	
+				return user;
+					
 				//}
 				//throw new LoginException("用户未激活");
 			}
